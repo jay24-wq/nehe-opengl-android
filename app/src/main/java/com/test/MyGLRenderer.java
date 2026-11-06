@@ -9,20 +9,20 @@ import android.opengl.GLU;
  *  OpenGL Custom renderer used with GLSurfaceView
  */
 public class MyGLRenderer implements GLSurfaceView.Renderer {
-    Triangle triangle;
-    Square quad;
+    private Pyramid pyramid;    // (NEW)
+    private Cube cube;          // (NEW)
 
     // Rotational angle and speed (NEW)
-    private float angleTriangle = 0.0f; // (NEW)
-    private float angleQuad = 0.0f;     // (NEW)
-    private float speedTriangle = 0.5f; // (NEW)
-    private float speedQuad = -0.4f;    // (NEW)
+    private static float anglePyramid = 0; // Rotational angle in degree for pyramid (NEW)
+    private static float angleCube = 0;    // Rotational angle in degree for cube (NEW)
+    private static float speedPyramid = 2.0f; // Rotational speed for pyramid (NEW)
+    private static float speedCube = -1.5f;   // Rotational speed for cube (NEW)
 
     // Constructor with global application context
     public MyGLRenderer(Context context) {
         // Set up the data-array buffers for these shapes ( NEW )
-        triangle = new Triangle();   // ( NEW )
-        quad = new Square();
+        pyramid = new Pyramid();   // (NEW)
+        cube = new Cube();         // (NEW)
     }
 
     // Call back when the surface is first created or re-created
@@ -70,16 +70,17 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         gl.glLoadIdentity();                 // Reset model-view matrix ( NEW )
         gl.glTranslatef(-1.5f, 0.0f, -6.0f); // Translate left and into the screen ( NEW )
-        gl.glRotatef(angleTriangle, 0.0f, 1.0f, 0.0f); // Rotate the triangle about the y-axis (NEW)
-        triangle.draw(gl);                   // Draw triangle ( NEW )
+        gl.glRotatef(anglePyramid, 0.1f, 1.0f, -0.1f); // Rotate (NEW)
+        pyramid.draw(gl);                              // Draw the pyramid (NEW)
 
         gl.glLoadIdentity();                 // Reset the mode-view matrix (NEW)
         gl.glTranslatef(1.5f, 0.0f, -6.0f);  // Translate right and into the screen (NEW)
-        gl.glRotatef(angleQuad, 1.0f, 0.0f, 0.0f); // Rotate the square about the x-axis (NEW)
-        quad.draw(gl);
+        gl.glScalef(0.8f, 0.8f, 0.8f);      // Scale down (NEW)
+        gl.glRotatef(angleCube, 1.0f, 1.0f, 1.0f); // rotate about the axis (1,1,1) (NEW)
+        cube.draw(gl);                      // Draw the cube (NEW)
 
         // Update the rotational angle after each refresh (NEW)
-        angleTriangle += speedTriangle; // (NEW)
-        angleQuad += speedQuad;         // (NEW)
+        anglePyramid += speedPyramid;   // (NEW)
+        angleCube += speedCube;         // (NEW)
     }
 }
