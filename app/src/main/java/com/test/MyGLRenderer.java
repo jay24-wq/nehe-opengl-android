@@ -10,7 +10,7 @@ import android.opengl.GLU;
  */
 public class MyGLRenderer implements GLSurfaceView.Renderer {
     private Pyramid pyramid;    // (NEW)
-    private Cube cube;          // (NEW)
+    private Cube1 cube;          // (NEW)
 
     // Rotational angle and speed (NEW)
     private static float anglePyramid = 0; // Rotational angle in degree for pyramid (NEW)
@@ -22,7 +22,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     public MyGLRenderer(Context context) {
         // Set up the data-array buffers for these shapes ( NEW )
         pyramid = new Pyramid();   // (NEW)
-        cube = new Cube();         // (NEW)
+        cube = new Cube1();         // (NEW)
     }
 
     // Call back when the surface is first created or re-created
