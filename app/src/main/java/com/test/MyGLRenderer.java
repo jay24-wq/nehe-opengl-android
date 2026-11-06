@@ -9,11 +9,14 @@ import android.opengl.GLU;
  *  OpenGL Custom renderer used with GLSurfaceView
  */
 public class MyGLRenderer implements GLSurfaceView.Renderer {
-    Context context;   // Application's context
+    Triangle triangle;
+    Square quad;
 
     // Constructor with global application context
     public MyGLRenderer(Context context) {
-        this.context = context;
+        // Set up the data-array buffers for these shapes ( NEW )
+        triangle = new Triangle();   // ( NEW )
+        quad = new Square();
     }
 
     // Call back when the surface is first created or re-created
@@ -59,7 +62,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Clear color and depth buffers using clear-value set earlier
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 
-        // You OpenGL|ES rendering code here
-        // ......
+        gl.glLoadIdentity();                 // Reset model-view matrix ( NEW )
+        gl.glTranslatef(-1.5f, 0.0f, -6.0f); // Translate left and into the screen ( NEW )
+        triangle.draw(gl);                   // Draw triangle ( NEW )
+
+        // Translate right, relative to the previous translation ( NEW )
+        gl.glTranslatef(3.0f, 0.0f, 0.0f);
+        quad.draw(gl);
     }
 }
