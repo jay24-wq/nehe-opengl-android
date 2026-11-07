@@ -9,20 +9,13 @@ import android.opengl.GLU;
  *  OpenGL Custom renderer used with GLSurfaceView
  */
 public class MyGLRenderer implements GLSurfaceView.Renderer {
-    private Context context;
-    private TextureCube cube;          // (NEW)
+    private PhotoCube cube;     // (NEW)
     private static float angleCube = 0;     // rotational angle in degree for cube
     private static float speedCube = -1.5f; // rotational speed for cube
 
-    // Rotational angle and speed (NEW)
-    private static float anglePyramid = 0; // Rotational angle in degree for pyramid (NEW)
-    private static float speedPyramid = 2.0f; // Rotational speed for pyramid (NEW)
-
-    // Constructor with global application context
+    // Constructor
     public MyGLRenderer(Context context) {
-        // Set up the data-array buffers for these shapes ( NEW )
-        this.context = context;   // Get the application context (NEW)
-        cube = new TextureCube();         // (NEW)
+        cube = new PhotoCube(context);    // (NEW)
     }
 
     // Call back when the surface is first created or re-created
@@ -36,9 +29,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         gl.glShadeModel(GL10.GL_SMOOTH);   // Enable smooth shading of color
         gl.glDisable(GL10.GL_DITHER);      // Disable dithering for better performance
 
-        // You OpenGL|ES initialization code here
-        cube.loadTexture(gl, context);
-        gl.glEnable(GL10.GL_TEXTURE_2D);
+        // Setup Texture, each time the surface is created (NEW)
+        cube.loadTexture(gl);             // Load images into textures (NEW)
+        gl.glEnable(GL10.GL_TEXTURE_2D);  // Enable texture (NEW)
     }
 
     // Call back after onSurfaceCreated() or whenever the window's size changes
@@ -66,16 +59,16 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     // Call back to draw the current frame.
     @Override
     public void onDrawFrame(GL10 gl) {
-        // Clear color and depth buffers using clear-value set earlier
+        // Clear color and depth buffers
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 
-        gl.glLoadIdentity();                 // Reset the mode-view matrix (NEW)
-        gl.glTranslatef(0.0f, 0.0f, -6.0f);  // Translate right and into the screen (NEW)
-        gl.glScalef(0.8f, 0.8f, 0.8f);      // Scale down (NEW)
-        gl.glRotatef(angleCube, 1.0f, 1.0f, 1.0f); // rotate about the axis (1,1,1) (NEW)
-        cube.draw(gl);                      // Draw the cube (NEW)
+        // ----- Render the Cube -----
+        gl.glLoadIdentity();                  // Reset the model-view matrix
+        gl.glTranslatef(0.0f, 0.0f, -6.0f);   // Translate into the screen
+        gl.glRotatef(angleCube, 0.15f, 1.0f, 0.3f); // Rotate
+        cube.draw(gl);
 
-        // Update the rotational angle after each refresh (NEW)
-        angleCube += speedCube;         // (NEW)
+        // Update the rotational angle after each refresh.
+        angleCube += speedCube;
     }
 }
