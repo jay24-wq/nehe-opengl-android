@@ -9,13 +9,19 @@ import android.opengl.GLU;
  *  OpenGL Custom renderer used with GLSurfaceView
  */
 public class MyGLRenderer implements GLSurfaceView.Renderer {
-    private PhotoCube cube;     // (NEW)
-    private static float angleCube = 0;     // rotational angle in degree for cube
-    private static float speedCube = -1.5f; // rotational speed for cube
+    private Context context;
+    private TextureCube cube;
+    // For controlling cube's z-position, x and y angles and speeds (NEW)
+    float angleX = 0;   // (NEW)
+    float angleY = 0;   // (NEW)
+    float speedX = 0;   // (NEW)
+    float speedY = 0;   // (NEW)
+    float z = -6.0f;    // (NEW)
 
     // Constructor
     public MyGLRenderer(Context context) {
-        cube = new PhotoCube(context);    // (NEW)
+        this.context = context;
+        cube = new TextureCube();
     }
 
     // Call back when the surface is first created or re-created
@@ -29,9 +35,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         gl.glShadeModel(GL10.GL_SMOOTH);   // Enable smooth shading of color
         gl.glDisable(GL10.GL_DITHER);      // Disable dithering for better performance
 
-        // Setup Texture, each time the surface is created (NEW)
-        cube.loadTexture(gl);             // Load images into textures (NEW)
-        gl.glEnable(GL10.GL_TEXTURE_2D);  // Enable texture (NEW)
+        // Setup Texture, each time the surface is created
+        cube.loadTexture(gl, context);    // Load image into Texture
+        gl.glEnable(GL10.GL_TEXTURE_2D);  // Enable texture
     }
 
     // Call back after onSurfaceCreated() or whenever the window's size changes
@@ -64,11 +70,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         // ----- Render the Cube -----
         gl.glLoadIdentity();                  // Reset the model-view matrix
-        gl.glTranslatef(0.0f, 0.0f, -6.0f);   // Translate into the screen
-        gl.glRotatef(angleCube, 0.15f, 1.0f, 0.3f); // Rotate
+        gl.glTranslatef(0.0f, 0.0f, z);   // Translate into the screen (NEW)
+        gl.glRotatef(angleX, 1.0f, 0.0f, 0.0f); // Rotate (NEW)
+        gl.glRotatef(angleY, 0.0f, 1.0f, 0.0f); // Rotate (NEW)
         cube.draw(gl);
 
-        // Update the rotational angle after each refresh.
-        angleCube += speedCube;
+        // Update the rotational angle after each refresh (NEW)
+        angleX += speedX;  // (NEW)
+        angleY += speedY;  // (NEW)
     }
 }
