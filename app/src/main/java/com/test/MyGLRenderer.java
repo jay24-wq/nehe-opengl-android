@@ -17,6 +17,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     float speedX = 0;   // (NEW)
     float speedY = 0;   // (NEW)
     float z = -6.0f;    // (NEW)
+    int currentTextureFilter = 0;  // Texture filter (NEW)
 
     // Constructor
     public MyGLRenderer(Context context) {
@@ -73,7 +74,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         gl.glTranslatef(0.0f, 0.0f, z);   // Translate into the screen (NEW)
         gl.glRotatef(angleX, 1.0f, 0.0f, 0.0f); // Rotate (NEW)
         gl.glRotatef(angleY, 0.0f, 1.0f, 0.0f); // Rotate (NEW)
-        cube.draw(gl);
+        cube.draw(gl, currentTextureFilter);    // (NEW)
 
         // Update the rotational angle after each refresh (NEW)
         angleX += speedX;  // (NEW)
