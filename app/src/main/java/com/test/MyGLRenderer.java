@@ -19,6 +19,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     float z = -6.0f;    // (NEW)
     int currentTextureFilter = 0;  // Texture filter (NEW)
 
+    // Lighting (NEW)
+    boolean lightingEnabled = false;   // Is lighting on? (NEW)
+    private float[] lightAmbient = {0.5f, 0.5f, 0.5f, 1.0f};
+    private float[] lightDiffuse = {1.0f, 1.0f, 1.0f, 1.0f};
+    private float[] lightPosition = {0.0f, 0.0f, 2.0f, 1.0f};
+
     // Constructor
     public MyGLRenderer(Context context) {
         this.context = context;
@@ -39,6 +45,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Setup Texture, each time the surface is created
         cube.loadTexture(gl, context);    // Load image into Texture
         gl.glEnable(GL10.GL_TEXTURE_2D);  // Enable texture
+
+        // Setup lighting GL_LIGHT1 with ambient and diffuse lights (NEW)
+        gl.glLightfv(GL10.GL_LIGHT1, GL10.GL_AMBIENT, lightAmbient, 0);
+        gl.glLightfv(GL10.GL_LIGHT1, GL10.GL_DIFFUSE, lightDiffuse, 0);
+        gl.glLightfv(GL10.GL_LIGHT1, GL10.GL_POSITION, lightPosition, 0);
+        gl.glEnable(GL10.GL_LIGHT1);   // Enable Light 1 (NEW)
+        gl.glEnable(GL10.GL_LIGHT0);   // Enable the default Light 0 (NEW)
     }
 
     // Call back after onSurfaceCreated() or whenever the window's size changes
@@ -68,6 +81,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     public void onDrawFrame(GL10 gl) {
         // Clear color and depth buffers
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
+
+        // Enable lighting? (NEW)
+        if (lightingEnabled) {
+            gl.glEnable(GL10.GL_LIGHTING);
+        } else {
+            gl.glDisable(GL10.GL_LIGHTING);
+        }
 
         // ----- Render the Cube -----
         gl.glLoadIdentity();                  // Reset the model-view matrix
