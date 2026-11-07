@@ -25,6 +25,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private float[] lightDiffuse = {1.0f, 1.0f, 1.0f, 1.0f};
     private float[] lightPosition = {0.0f, 0.0f, 2.0f, 1.0f};
 
+    // Blending (NEW)
+    boolean blendingEnabled = false;  // Is blending on? (NEW)
+
     // Constructor
     public MyGLRenderer(Context context) {
         this.context = context;
@@ -52,6 +55,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         gl.glLightfv(GL10.GL_LIGHT1, GL10.GL_POSITION, lightPosition, 0);
         gl.glEnable(GL10.GL_LIGHT1);   // Enable Light 1 (NEW)
         gl.glEnable(GL10.GL_LIGHT0);   // Enable the default Light 0 (NEW)
+
+        // Setup Blending (NEW)
+        gl.glColor4f(1.0f, 1.0f, 1.0f, 0.5f);           // Full brightness, 50% alpha (NEW)
+        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE); // Select blending function (NEW)
     }
 
     // Call back after onSurfaceCreated() or whenever the window's size changes
@@ -87,6 +94,16 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             gl.glEnable(GL10.GL_LIGHTING);
         } else {
             gl.glDisable(GL10.GL_LIGHTING);
+        }
+
+        // Blending Enabled? (NEW)
+        if (blendingEnabled) {
+            gl.glEnable(GL10.GL_BLEND);       // Turn blending on (NEW)
+            gl.glDisable(GL10.GL_DEPTH_TEST); // Turn depth testing off (NEW)
+
+        } else {
+            gl.glDisable(GL10.GL_BLEND);      // Turn blending off (NEW)
+            gl.glEnable(GL10.GL_DEPTH_TEST);  // Turn depth testing on (NEW)
         }
 
         // ----- Render the Cube -----

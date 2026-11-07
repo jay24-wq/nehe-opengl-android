@@ -54,6 +54,9 @@ public class MyGLSurfaceView extends GLSurfaceView {
             case KeyEvent.KEYCODE_L:  // Toggle lighting on/off (NEW)
                 renderer.lightingEnabled = !renderer.lightingEnabled;
                 break;
+            case KeyEvent.KEYCODE_B:  // Toggle Blending on/off (NEW)
+                renderer.blendingEnabled = !renderer.blendingEnabled;
+                break;
         }
         return true;  // Event handled
     }

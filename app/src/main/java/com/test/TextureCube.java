@@ -57,8 +57,6 @@ public class TextureCube {
     // Draw the shape
     public void draw(GL10 gl, int textureFilter) {
         gl.glFrontFace(GL10.GL_CCW);    // Front face in counter-clockwise orientation
-        gl.glEnable(GL10.GL_CULL_FACE); // Enable cull face
-        gl.glCullFace(GL10.GL_BACK);    // Cull the back face (don't display)
 
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
         gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
@@ -111,13 +109,12 @@ public class TextureCube {
 
         gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);  // Disable texture-coords-array (NEW)
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
-        gl.glDisable(GL10.GL_CULL_FACE);
     }
 
     // Load an image into GL texture
     public void loadTexture(GL10 gl, Context context) {
         // Construct an input stream to texture image "res\drawable\crate.png"
-        InputStream istream = context.getResources().openRawResource(R.drawable.crate);
+        InputStream istream = context.getResources().openRawResource(R.drawable.glass);
         Bitmap bitmap;
         try {
             // Read and decode input as bitmap
